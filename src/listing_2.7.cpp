@@ -5,7 +5,7 @@
 #include <functional>
 
 void do_work(unsigned id){
-	//for (int j; j < 100000000; j++){};
+	for (int j; j < 100000000; j++){};
 	std::cout << id << std::endl;
 }
 
