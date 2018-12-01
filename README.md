@@ -74,7 +74,7 @@ auto diff = end - start;
 
 // Output the execution time in various units
 cout << chrono::duration <double, milli> (diff).count() << " ms" << endl;
-cout << chrono::duration <double, micro> (diff).count() << " ms" << endl;
+cout << chrono::duration <double, micro> (diff).count() << " us" << endl;
 cout << chrono::duration <double, nano> (diff).count() << " ns" << endl;
 ```
 
