@@ -21,7 +21,7 @@ Upon logging into the CCV, you will notice a message stating the number of cores
 Linux contains a simple `time` command that you can use to get the approximate execution time.  This is probably the simplest way to get the ballpark estimate of your execution time; however, this utility simply computes the total execution time regardless of what else the CPU is doing.  It will generally overestimate the execution time for multi-threaded applications and may produce inconsistent results.
 
 ```
-time main2
+time ./main2
 ```
 
 This will return three numbers that consist of 1) the total time taken to run the executable, 2) the total time spent executing the program (user mode), and 3) the total time spent on operating system overhead (kernel mode).
