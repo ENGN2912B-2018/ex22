@@ -69,6 +69,17 @@ cout << chrono::duration <double, nano> (diff).count() << " ns" << endl;
 
 This method will allow you to get the actual execution time for any section(s) of your code you wish to run, rather than for the entire program as `time` generates.  This method reads the system clock in real time.  As such, it does not compute the execution time specific to each thread.  It will, however, allow you to profile only a segment of your code if you are trying to accelerate it.
 
+Below shows the result of running the `main2` example with 1 thread on one of the CCV's compute nodes.  Note how the 'user' time generally reflects the time computed using `time`.  There is also some amount of overhead of starting the executable, reflected in the 'real' time estimate.
+
+```
+[guest102@node1161 build]$ time ./main2 1
+Tot: 146.335 ms
+
+real	0m0.151s
+user	0m0.147s
+sys	0m0.004s
+```
+
 Note that if you don't have c++11 compiler support, you can still use the Boost Posix_Time library or the C standard library `time.h`, which includes several macros for timing C programs.
 
 ### GNU Profiler (gprof)
