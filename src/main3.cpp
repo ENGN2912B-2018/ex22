@@ -1,3 +1,6 @@
+// example adapted from Williams "C++ Concurrency in Action" (Manning, 2nd Ed., 2019)
+// listing_2.8.cpp
+
 #include <thread>
 #include <numeric>
 #include <algorithm>

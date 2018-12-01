@@ -1,3 +1,6 @@
+// example adapted from Williams "C++ Concurrency in Action" (Manning, 2nd Ed., 2019)
+// listing_1.1.cpp
+
 #include <iostream>
 #include <thread>
 
