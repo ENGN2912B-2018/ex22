@@ -7,9 +7,12 @@
 #include <algorithm>
 #include <functional>
 #include <cstdlib>
+#include <chrono>
+
+using namespace std;
 
 void do_work(unsigned id) {
-	for (int j; j < 1000000000; j++){};
+	for (int j; j < 1e8; j++){};
 	std::cout << id << std::endl;
 }
 
@@ -17,7 +20,9 @@ int main(int argc, char* argv[]) {
 	unsigned N=10;
 	if (argc > 1)
 		N = atoi(argv[1]);
-	
+
+	auto start = chrono::steady_clock::now();
+
     std::vector<std::thread> threads;
     for(unsigned i=0;i<N;++i)
     {
@@ -25,4 +30,7 @@ int main(int argc, char* argv[]) {
     }
     std::for_each(threads.begin(),threads.end(),
         std::mem_fn(&std::thread::join));  // std::thread::join() would fail
+
+	auto end = chrono::steady_clock::now();
+	std::cout << "Tot: " << chrono::duration <double, milli> (end-start).count() << " ms" << std::endl;
 }
