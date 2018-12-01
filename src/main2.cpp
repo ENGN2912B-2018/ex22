@@ -6,15 +6,20 @@
 #include <thread>
 #include <algorithm>
 #include <functional>
+#include <cstdlib>
 
 void do_work(unsigned id) {
-	for (int j; j < 100000000; j++){};
+	for (int j; j < 1000000000; j++){};
 	std::cout << id << std::endl;
 }
 
-int main() {
+int main(int argc, char* argv[]) {
+	unsigned N=10;
+	if (argc > 1)
+		N = atoi(argv[1]);
+	
     std::vector<std::thread> threads;
-    for(unsigned i=0;i<20;++i)
+    for(unsigned i=0;i<N;++i)
     {
         threads.push_back(std::thread(do_work,i));
     }

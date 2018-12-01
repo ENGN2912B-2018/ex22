@@ -61,7 +61,7 @@ T parallel_accumulate(Iterator first,Iterator last,T init)
 int main()
 {
     std::vector<int> vi;
-    for(int i=0;i<100;++i)
+    for(int i=0;i<10000;++i)
     {
         vi.push_back(10);
     }
