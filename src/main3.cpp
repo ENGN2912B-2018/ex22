@@ -8,12 +8,6 @@
 #include <vector>
 #include <iostream>
 #include <cassert>
-#include <chrono>
-
-namespace chrono = std::chrono;
-
-//#define DEBUG
-#define CHRONO
 
 template<typename Iterator,typename T>
 struct accumulate_block {
@@ -27,9 +21,6 @@ T parallel_accumulate(Iterator first,Iterator last,T init) {
 
     // get vector length
     unsigned long const length = std::distance(first,last);
-    #ifdef DEBUG
-    std::cout << "Vector contains " << length << " elements" << std::endl;
-    #endif //DEBUG
 
     // return with initial value if length is 0
     if(!length)
@@ -41,22 +32,13 @@ T parallel_accumulate(Iterator first,Iterator last,T init) {
 
     // get number of available processing cores
     unsigned long const hardware_threads = std::thread::hardware_concurrency();
-    #ifdef DEBUG
-    std::cout << "Found " << hardware_threads << " processor cores" << std::endl;
-    #endif //DEBUG
 
     // determine number of threads (default to 2 if we can't tell)
     unsigned long const num_threads =
         std::min(hardware_threads!=0 ? hardware_threads : 2, max_threads);
-    #ifdef DEBUG
-    std::cout << "Using " << num_threads << " threads" << std::endl;
-    #endif //DEBUG
 
     // determine block size
     unsigned long const block_size = length / num_threads;
-    #ifdef DEBUG
-    std::cout << "Block size is " << block_size << " elements" << std::endl;
-    #endif //DEBUG
 
     // initialize vectors
     std::vector<T> results(num_threads);
@@ -99,24 +81,12 @@ int main(int argc, char* argv[])
     }
 
     // run serial accumulation (and time it)
-    auto start = chrono::steady_clock::now();
     int ser_sum = accumulate(vi.begin(), vi.end(), 5);
-    auto end = chrono::steady_clock::now();
-
-    #ifdef CHRONO
-    std::cout << "Serial Elapsed Time = " << chrono::duration <double, std::milli> (end-start).count() << " ms" << std::endl;
-    #endif //CHRONO
 
     std::cout << "Serial sum = " << ser_sum << "\n\n" << std::endl;
 
     // run parallel accumulation (and time it)
-    start = chrono::steady_clock::now();
     int par_sum = parallel_accumulate(vi.begin(), vi.end(), 5);
-    end = chrono::steady_clock::now();
-
-    #ifdef CHRONO
-    std::cout << "Parallel Elapsed Time = " << chrono::duration <double, std::milli> (end-start).count() << " ms" << std::endl;
-    #endif // CHRONO
 
     std::cout << "Parallel sum = " << par_sum << std::endl;
 }
