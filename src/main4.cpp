@@ -148,11 +148,15 @@ int main(int argc, char* argv[])
     }
 
     // run serial accumulation (and time it)
+    #ifdef CHRONO
     auto ser_start = chrono::steady_clock::now();
+    #endif // CHRONO
+
     int ser_sum = accumulate(vi.begin(), vi.end(), 5);
-    auto ser_end = chrono::steady_clock::now();
 
     #ifdef CHRONO
+    auto ser_end = chrono::steady_clock::now();
+
     std::cout << "Serial Elapsed Time = " <<
         chrono::duration <double, std::milli> (ser_end-ser_start).count() <<
         " ms" << std::endl;
@@ -161,11 +165,15 @@ int main(int argc, char* argv[])
     std::cout << "Serial sum = " << ser_sum << "\n\n" << std::endl;
 
     // run parallel accumulation (and time it)
+    #ifdef CHRONO
     auto par_start = chrono::steady_clock::now();
+    #endif // CHRONO
+
     int par_sum = parallel_accumulate(vi.begin(), vi.end(), 5);
-    auto par_end = chrono::steady_clock::now();
 
     #ifdef CHRONO
+    auto par_end = chrono::steady_clock::now();
+
     std::cout << "Parallel Elapsed Time = " <<
         chrono::duration <double, std::milli> (par_end-par_start).count() <<
         " ms" << std::endl;
