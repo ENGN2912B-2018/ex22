@@ -6,6 +6,7 @@
 
 #define SYNC
 
+// This function recursively spawns a series of nested threads to demonstrate join/detach behavior
 void hello(unsigned id)
 {
 	std::cout<<"Hello Concurrent World " << id << "\n";
