@@ -1,4 +1,4 @@
-# Classroom example code from Lectures 22-24 - C++11 Standard Threads
+# Classroom example code from Lecture 22 - C++11 Standard Threads
 
 Since the C++11 standard was released, thread support has been a part of the C++ built-in libraries.  This support had been expanded upon in C++14 and C++17, but the 2011 implementation has the majority of the features necessary for most multi-threaded applications.  The examples in this repository have been adapted from the text "C++ Concurrency in Action" by Anthony Williams (Manning, 2nd Ed., 2019).
 
@@ -100,4 +100,25 @@ Then analyze the profiler output, run
 
 ```
 gprof ./main2 gmon.out > analysis.txt
+```
+
+Note that since we have a multi-threaded applicatin, there are a substantial number of function calls referenced and tracked in the gprof output.  Still, most of these calls can be ignored while extracting the useful information.
+
+```
+[guest102@node1161 build]$ more analysis.txt
+Flat profile:
+
+Each sample counts as 0.01 seconds.
+  %   cumulative   self              self     total
+ time   seconds   seconds    calls  ms/call  ms/call  name
+100.09      0.14     0.14        1   140.13   140.13  do_work(unsigned int)
+  0.00      0.14     0.00        7     0.00     0.00  void (*&&std::forward<void (*)(unsigned int)>(std::remove_reference<void (*)(unsign
+ed int)>::type&))(unsigned int)
+  0.00      0.14     0.00        7     0.00     0.00  unsigned int& std::forward<unsigned int&>(std::remove_reference<unsigned int&>::typ
+e&)
+  0.00      0.14     0.00        5     0.00     0.00  std::vector<std::thread, std::allocator<std::thread> >::size() const
+  0.00      0.14     0.00        4     0.00     0.00  __gnu_cxx::__normal_iterator<std::thread*, std::vector<std::thread, std::allocator<
+std::thread> > >::base() const
+...
+
 ```
