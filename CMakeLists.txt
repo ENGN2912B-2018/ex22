@@ -16,8 +16,10 @@ find_package(Threads REQUIRED)
 add_executable(main1 src/main1.cpp)
 add_executable(main2 src/main2.cpp)
 add_executable(main3 src/main3.cpp)
+add_executable(main4 src/main4.cpp)
 
 # link pthreads
 target_link_libraries(main1 Threads::Threads)
 target_link_libraries(main2 Threads::Threads)
 target_link_libraries(main3 Threads::Threads)
+target_link_libraries(main4 Threads::Threads)
