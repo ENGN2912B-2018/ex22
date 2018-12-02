@@ -9,7 +9,7 @@
 #include <cstdlib>
 #include <chrono>
 
-using namespace std;
+namespace chrono = std::chrono;
 
 void do_work(unsigned id) {
 	for (int j; j < 1e8; j++){};
@@ -32,5 +32,5 @@ int main(int argc, char* argv[]) {
         std::mem_fn(&std::thread::join));  // std::thread::join() would fail
 
 	auto end = chrono::steady_clock::now();
-	std::cout << "Tot: " << chrono::duration <double, milli> (end-start).count() << " ms" << std::endl;
+	std::cout << "Tot: " << chrono::duration <double, std::milli> (end-start).count() << " ms" << std::endl;
 }
