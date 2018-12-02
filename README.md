@@ -19,7 +19,7 @@ There is also a CMakeLists.txt file that allows you to build each example.  Usin
 ```
 mkdir build
 cd build
-cmake -DCMAKE_CXX_COMPILER=g++ -DCMAKE_BUILD_TYPE=Debug ..
+cmake -DCMAKE_CXX_COMPILER=g++ ..
 make
 ```
 
@@ -52,6 +52,10 @@ This utility is easy to use for back of the envelope benchmarking and profiling,
 The system clock can be invoked directly within the C++ code.  Since C++11, the `chrono` library provides a standard way to accurately measure the execution time of a section of code.
 
 ```c++
+#include <chrono>
+
+namespace chrono = std::chrono;
+
 auto start = chrono::steady_clock::now();
 
 //  Code segment to be timed
@@ -69,7 +73,7 @@ cout << chrono::duration <double, nano> (diff).count() << " ns" << endl;
 
 This method will allow you to get the actual execution time for any section(s) of your code you wish to run, rather than for the entire program as `time` generates.  This method reads the system clock in real time.  As such, it does not compute the execution time specific to each thread.  It will, however, allow you to profile only a segment of your code if you are trying to accelerate it.
 
-Below shows the result of running the `main2` example with 1 thread on one of the CCV's compute nodes.  Note how the 'user' time generally reflects the time computed using `time`.  There is also some amount of overhead of starting the executable, reflected in the 'real' time estimate.
+Below shows the result of running the `main2` example with 1 thread on one of the CCV's compute nodes.  The 'user' time in this case generally reflects the time computed using `time`.  There is also some amount of overhead of starting the executable, reflected in the 'real' time estimate.
 
 ```
 [guest102@node1161 build]$ time ./main2 1
@@ -84,16 +88,23 @@ Note that if you don't have c++11 compiler support, you can still use the Boost 
 
 ### GNU Profiler (gprof)
 
-As seen in single-threaded executables from earlier clossroom examples, the GNU Profiler can be used to investigate the detailed execution time of the program and each function call.  All that is needed is to build the executable with GCC's `-pg` option.  You can also direct CMake to include these options in your `Debug` target (i.e., when using the `-DCMAKE_BUILD_TYPE=Debug` argument).
+As seen in single-threaded executables from earlier clossroom examples, the GNU Profiler can be used to investigate the detailed execution time of the program and each function call.  All that is needed is to build the executable with GCC's `-pg` option.
 
 ```
-g++ -std=c++11 -pg -lpthread -o main1 main1.cpp
+g++ -std=c++11 -pg -lpthread -o main2 main2.cpp
+```
+
+You can also direct CMake to include these options in your `Debug` target (i.e., when using the `-DCMAKE_BUILD_TYPE=Debug` argument).
+
+```
+cmake -DCMAKE_CXX_COMPILER=g++ -DCMAKE_BUILD_TYPE=Debug ..
+make main2
 ```
 
 Simply run the executable after it compiles to create the profiling data, `gmon.out`.
 
 ```
-./main1
+./main2 1
 ```
 
 Then analyze the profiler output, run
@@ -102,7 +113,7 @@ Then analyze the profiler output, run
 gprof ./main2 gmon.out > analysis.txt
 ```
 
-Note that since we have a multi-threaded applicatin, there are a substantial number of function calls referenced and tracked in the gprof output.  Still, most of these calls can be ignored while extracting the useful information.
+Note that since we have a multi-threaded application, there are a substantial number of function calls referenced and tracked in the gprof output.  Still, most of these calls can be ignored while extracting the useful information.
 
 ```
 [guest102@node1161 build]$ more analysis.txt
