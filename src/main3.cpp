@@ -18,7 +18,7 @@ namespace chrono = std::chrono;
 template<typename Iterator,typename T>
 struct accumulate_block {
     void operator()(Iterator first,Iterator last,T& result) {
-        result=std::accumulate(first,last,result);
+        result = std::accumulate(first,last,result);
     }
 };
 
@@ -66,7 +66,7 @@ T parallel_accumulate(Iterator first,Iterator last,T init) {
     Iterator block_start = first;
     for(unsigned long i=0; i<(num_threads-1); ++i) {
         Iterator block_end = block_start;
-        std::advance(block_end, block_size);    // move block_end to next block
+        std::advance(block_end, block_size);    // move block_end to start of next block
         threads[i] = std::thread(               // launch new thread, store object in vector of threads
             accumulate_block<Iterator,T>(),     // thread executes with function object
             block_start, block_end, std::ref(results[i]));  // pass indices by value, vector by reference
@@ -80,7 +80,8 @@ T parallel_accumulate(Iterator first,Iterator last,T init) {
     std::for_each(threads.begin(), threads.end(), std::mem_fn(&std::thread::join));
 
     // sum results of each thread and return
-    return std::accumulate(results.begin(), results.end(), init);
+    auto res = std::accumulate(results.begin(), results.end(), init);
+    return res;
 }
 
 int main(int argc, char* argv[])
