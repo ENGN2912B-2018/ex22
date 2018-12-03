@@ -11,14 +11,10 @@
 # Specify a job name:
 #SBATCH -J main4
 
-# Specify an array
-#SBATCH --array=3-12
-
 # Specify an output file
-#SBATCH -e ArrayJob-%j.err
-#SBATCH -o ArrayJob-%j.out
+#SBATCH -o MyThreadedJob-%j.out
+#SBATCH -e MyThreadedJob-%j.out
 
 # Run a command
-echo "Starting job $SLURM_ARRAY_TASK_ID on $HOSTNAME"
-./main4 $SLURM_ARRAY_TASK_ID
+./main4 10000000
 
