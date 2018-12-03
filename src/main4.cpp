@@ -9,6 +9,7 @@
 #include <iostream>
 #include <cassert>
 #include <chrono>
+#include <cmath>
 
 namespace chrono = std::chrono;
 
@@ -136,14 +137,16 @@ T parallel_accumulate(Iterator first,Iterator last,T init) {
 int main(int argc, char* argv[])
 {
     // accept optional input parameter for vector size
-    int vSize = 1000;
-    if (argc > 1)
-        vSize = atoi(argv[1]);
+    unsigned long vSize = 1000;
+    if (argc > 1){
+        int exponent = atoi(argv[1]);
+		vSize = static_cast<unsigned long>(pow(10,exponent));
+	}
     assert(vSize);      // verify positive integer entered
 
     // populate vector with integers
     std::vector<int> vi;
-    for(int i=0; i<vSize; ++i) {
+    for(unsigned long i=0; i<vSize; ++i) {
         vi.push_back(10);
     }
 
@@ -152,7 +155,7 @@ int main(int argc, char* argv[])
     auto ser_start = chrono::steady_clock::now();
     #endif // CHRONO
 
-    int ser_sum = accumulate(vi.begin(), vi.end(), 5);
+    long int ser_sum = accumulate(vi.begin(), vi.end(), 5);
 
     #ifdef CHRONO
     auto ser_end = chrono::steady_clock::now();
@@ -169,7 +172,7 @@ int main(int argc, char* argv[])
     auto par_start = chrono::steady_clock::now();
     #endif // CHRONO
 
-    int par_sum = parallel_accumulate(vi.begin(), vi.end(), 5);
+    long int par_sum = parallel_accumulate(vi.begin(), vi.end(), 5);
 
     #ifdef CHRONO
     auto par_end = chrono::steady_clock::now();
